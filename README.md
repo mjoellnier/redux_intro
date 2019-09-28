@@ -138,9 +138,9 @@ src/
 L components/
 L redux/
   L reducers/
-    index.js
-    todos.js
-    visibilityFilters.js
+      index.js
+      todos.js
+      visibilityFilters.js
   actions.js
   actionTypes.js
   selectos.js
