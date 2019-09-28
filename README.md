@@ -1,5 +1,3 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Nearly all information in this Readme are taken from the official docs from [React](https://reactjs.org/docs/getting-started.html) and [Redux](https://redux.js.org/introduction/getting-started!
-
 # Intro
 
 _Redux is a predictable state container for JavaScript apps. It helps you write applications that behave consistently, run in different environments (client, server, and native), and are easy to test. On top of that, it provides a great developer experience, such as live code editing combined with a time traveling debugger._ This is stated in the official Redux docs. As I want to understand this and get my hands dirty I created this Redux intro project to wrap my head around it! Maybe it helps you as well as it will hopefully help myself understanding Redux.
@@ -130,3 +128,58 @@ ReactDOM.render(
   rootElement
 );
 ```
+
+## The Redux part of the app
+
+All the stuff that has directly to do with Redux (Store, Actions and Reducers) are in a special folder `redux`. This separates the redux _configuration_ from the rest of the app. So you end up with the following structure:
+
+```
+src/
+L components/
+L redux/
+  L reducers/
+    index.js
+    todos.js
+    visibilityFilters.js
+  actions.js
+  actionTypes.js
+  selectos.js
+  store.js
+index.js
+...
+```
+
+The **Store** is initialized in the `store.js` file on the root redux level via the `createStore` method. It takes several arguments but here only one is needed: the location of the reducers. As there is an `index.js` file in the location, it takes whatever this returns. This allows us to create multiple different reducers in their own files and export them as one. For more information check out the [createStore api docs](https://redux.js.org/api/createstore)
+
+The **Actions** are declared in their own file as well. As Actions are simple JavaScript objects they always contain a `type`. It is considered good practice to define the types in constants which can be declared in an own file when the app becomes large enough. This allows for more structure. The rest of the action object is up to you and how you implement the reducers. In this example there is always a payload declared which is used in the reducers.
+
+The **Reducer** are in their own subfolder. This allows us to create multiple reducer files that handle differend portions of the state manipulation and export them combined for the store creation (see notes above). Each reducer is created with the same structure: there is an initial state and a function that manipulates the given state. The method should accept two parameter: `state` and `action`. It should be considered good practice to pass the `initialState` as default parameter to the state parameter. The method should take the `action` parameter to decide what to do with the given `state`. This is best done via a `switch/case`. To export multiple `reducer` you can make use of the `combineReducer` method and declare that in an `index.js`. The `combineReducers` method is not bound to the top level you can call it also in between to combine reducers for structural reasons. For more information check the [official docs for the method](https://redux.js.org/api/combinereducers!
+
+In this example you also find a `selectors.js` file in the redux part. This is a convenience class to easily access the redux store items.
+
+## Work with Redux in the app
+
+We're nearly there - the last step is to access and work with the Redux items from within the app source. For this I made use of the **Hook API** that React-Redux implements from version `7.1.0` on. I left some of the code as comments in the files how you can use Redux without Hooks, but as I'm a fan of the Hooks API I implemented them in the Redux calls.
+
+**To access the redux store** you can make use of the `useSelector` hook. It takes a selector function and is able to return either a single value or an object from the redux state. For a deeper dive into this hook check out the [official docs](https://react-redux.js.org/next/api/hooks).
+
+**To call an action** you can make use of the `useDispatch` hook. With it you can call the action method:
+
+```javascript
+const dispatch = useDispatch();
+return (
+  <button onClick={() => dispatch(importedActionMethod(params)}>
+    Action Button
+  </button>
+);
+```
+
+# Conclusion
+
+I needed definatly some time to wrap my head around the idea and the ways how to work with Redux. But especially the option to work with hooks made it very easy to get into it! I absolutely recommend to you to take yourself time to get the core ideas and the doing right! As I scrolled through the docs I also saw that this is just scratching the surface. But it's a good start and you can get going with it!
+
+When you find any error or you want to contribute to this guide feel free to! I'm looking forward to each PR 😊
+
+**And that's it folks - happy coding!**
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Nearly all information in this Readme are taken from the official docs from [React](https://reactjs.org/docs/getting-started.html) and [Redux](https://redux.js.org/introduction/getting-started)!
